@@ -1,3 +1,4 @@
+
 local M = {}
 
 local augroup = vim.api.nvim_create_augroup('lazy-vimpack', {})
@@ -36,7 +37,30 @@ local function do_add(plugin)
 			name = plugin.name,
 			version = plugin.version,
 		}
-		vim.pack.add({ spec })
+		vim.pack.add(
+            { spec }
+            {
+                load = function(p)
+                    local data = p.spec.data or {}
+                    if data.cmd then
+                        for _, cmd in ipairs(data.cmd) do
+                            vim.api.nvim_create_user_command(
+                                cmd,
+                                function()
+                                    vim.cmd.packadd(p.spec.name)
+                                    if p.spec.data and p.spec.data.config then
+                                        p.spec.data.config()
+                                    end
+                                    vim.cmd(cmd)
+                                end,
+                                {})
+                        end
+                    else
+                        vim.cmd.packadd(p.spec.name)
+                    end
+                end
+            }
+        )
 	end
 
 	if plugin.config == true and plugin.opts == nil then

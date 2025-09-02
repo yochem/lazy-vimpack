@@ -83,7 +83,7 @@ Table legend:
 | build         | ➖             |
 | lazy          | ❌             |
 | event         | ✅             |
-| cmd           | ➖             |
+| cmd           | ✅             |
 | ft            | ✅             |
 | keys          | ➖             |
 | branch        | ✅             | Use `version` of `vim.pack.Spec`.
